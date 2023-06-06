@@ -7,11 +7,11 @@ export class NetworkStack extends cdk.Stack {
   constructor(scope: Construct, id: string, vpcCidrBlock: string, envName: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const projectName = "";
+    //const projectName = "";
     const region = "eu-west-2";
 
     // vpc
-    const vpc = new ec2.Vpc(this, `${projectName}`, {
+    const vpc = new ec2.Vpc(this, `frontier-task-vpc`, {
       cidr: vpcCidrBlock,
       maxAzs: 2,
       subnetConfiguration: [

@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "aws-cdk-lib": "2.82.0",
+    "cdk-ecr-deployment": "^2.5.6",
     "cdk-redisdb": "^0.0.25",
     "constructs": "^10.0.0",
     "source-map-support": "^0.5.21"
