@@ -1,6 +1,6 @@
 # Frontier Take Home DevOps task
 
-This is an example task develop by Jon Duffy for the frontier take home assignment
+This is an example task developed by Jon Duffy for the frontier take home assignment
 
 It is meant to demonstrate usage of CDK and to demonstate DevOps skills in a time constrained environment
 
@@ -71,17 +71,20 @@ flowchart LR
 
             subgraph private_subnet
 
-                API
+                subgraph publics_ecs
 
-                Redis
+                    API
 
-                Housekeeper
+                    Housekeeper
+                end
 
             end
 
             subgraph data_subnet
 
                 rds_postgres
+
+                Redis
 
             end
 
@@ -106,35 +109,126 @@ flowchart LR
 
 ## Caveats & Considerations
 
+
 * In an ideal deployment this would be setup as a multi account config with different environment
 * Pipelines would deploy the stacks to each environment
-* Networking, data, and application layers may not make sense to deploy as the same stack.
-  * Networking for example may well be a shared resouce
-  * DNS is very likley to be a shared resource
+* Currently all assets are in one file / CDK Stack
+  * Networking, data, and application layers may not make sense to deploy as the same stack.
+    * Networking for example may well be a shared resource
+    * DNS is very likley to be a shared resource
+* ECS fargate used for ease as docker K8's suggested in the docs, but this may not be ideal / cost effective 
+* Unsure as to where ansible would be useful / effective
+  * There are no AMI's to build
+  * Container hardening would be performed in a production setup
+
 
 
 ## Next Steps 
 
-* Securing containers and images using something like (dev-sec.io)[https://dev-sec.io/]
+### core unfinished pieces
+* Port mappings
+* Key and secret management
+* Security Groups // IAM access
+* Firewall (WAF)
+* Setting the environment variables
+* 
+
+### Project Composition
+
+* Folder / project config 
+* Break out CDK stacks
+* output variables, for other stacks / projects to reference
+
+### Security 
+
+* Ensure Security groups and NACL's are locked down appropirately 
+* Ensure all IAM roles are least privilidge
+* Ensure DB permissions are least privilidge
+* Firewalls are appropriate 
+* Alerting to appropriate channels i.e. slack
+* * Securing containers and images using something like (dev-sec.io)[https://dev-sec.io/]
+* pen testing (if new endpoints)
+* Encryption
+  * KMS keys used where required
+  * all passwords in secrets manager
+  * Keys and password are rotated 
+* Perform a threat analysis
+* WAF firewall
+
+
+## Instance configuration
+* As the go project is a monolith, may need to lock down each running container to ensure only the specified service runs
+
+### Cost, Performance, Utilisation
+
+* Ensure components are powerful enough to handle traffic / load / IO etc
+* Ensure components are not under utilised, i.e. wasting money
+* Is uneccessary networking traffic causing cost
+
+### Networking
+* Is all required access available
+* Are all private services properly private / inaccessible?
+* Are there an appropriate number of IP addresses available in the VPC's / subnets?
+
+
+### Performance and scaling
+
+* Can system scale up when required?
+* Can system scale down without data loss?
+* What should the triggers for scale up scale down be?
+
+### redundancy / health
+
+
+* health check on all ECS instances to ensure they are functioning correctly
+* DB backups
+  * Need to determine what is custom and not public or blockchain
+* Test failover
+  * Self healing 
+  * Loss of data
+
+### Build and deploy
+
 * Build of services should be triggered on checkin
-  * run test
+  * run tests
   * build secure new artifact (if on correct branch and tests have passed)
-* Application Logging 
-* Infra logging
-* Dashboards
-* Alerts and alarms
 * Pipeline
   * Deploy to multiple environments
   * failing the pipeline on alarms and rolling back
   * a deployment strategy
-* Compliant tagging
-* pen testing
+  
+
+### Monitoring and alerting
+
+* Application Logging 
+* Infra logging
+* Dashboards
+* Alerts and alarms
+
+### Compliance
+
+* Ensure all records required to be kept for legal and legislative reasons are persisted and immutable
+
 
 ### Account / Infra level
 
 * Guard Duty
 * Centralised logging 
 * [Prowler](https://github.com/prowler-cloud/prowler)
+* pen testing
+
+
+### General
+
+* Tagging
+* Naming 
+* Variablisation of naming string
+  * i.e. changing by environment
+  * see [Tagging](https://docs.aws.amazon.com/cdk/v2/guide/tagging.html)
+* codeformatting
+* * Coding standards / vairable naming
+* Git hooks 
+  * i.e. trigger formatting on push
 
 
 ## Reference

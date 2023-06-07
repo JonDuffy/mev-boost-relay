@@ -1,21 +1,23 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-import { InfraStack } from '../lib/infra-stack';
+import { DNSStack } from '../lib/dns-stack';
+import { NetworkStack } from '../lib/network-stack';
+import { ServiceStack } from '../lib/service-stack';
 
 const app = new cdk.App();
-new InfraStack(app, 'InfraStack', {
-  /* If you don't specify 'env', this stack will be environment-agnostic.
-   * Account/Region-dependent features and context lookups will not work,
-   * but a single synthesized template can be deployed anywhere. */
 
-  /* Uncomment the next line to specialize this stack for the AWS Account
-   * and Region that are implied by the current CLI configuration. */
-  // env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
+// new DNSStack(app, 'DNSStack', 'dev', {
+//   env: { account: '106225348621', region: 'eu-west-2' }
 
-  /* Uncomment the next line if you know exactly what Account and Region you
-   * want to deploy the stack to. */
-  // env: { account: '123456789012', region: 'us-east-1' },
+// });
 
-  /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
+// new NetworkStack(app, 'NetworkStack', "170.0.0.0/16", 'dev', {
+//   env: { account: '106225348621', region: 'eu-west-2' },
+  
+// });
+
+new ServiceStack(app, 'TaskStack', {
+
+  env: { account: '106225348621', region: 'eu-west-2' } 
 });

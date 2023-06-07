@@ -5,7 +5,7 @@ import * as route53 from 'aws-cdk-lib/aws-route53';
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 import * as ssm from 'aws-cdk-lib/aws-ssm';
 
-export class CoreServicesStack extends cdk.Stack {
+export class DNSStack extends cdk.Stack {
   constructor(scope: Construct, id: string, env_name: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
