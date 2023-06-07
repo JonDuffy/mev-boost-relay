@@ -109,7 +109,11 @@ flowchart LR
 
 ## Caveats & Considerations
 
-
+* AWS CDK chosen as IMO this is by far the best framework for developing on AWS
+  * This might not be the best solution for a multicloud setup but I chose it as it was discussed during the interview
+* This code is only partially complete.
+* This is not what a real deployment would look like as it would be designed for properly configured AWS account
+* The CDK code is contained with the "Application and Service" code as this is the design pattern
 * In an ideal deployment this would be setup as a multi account config with different environment
 * Pipelines would deploy the stacks to each environment
 * Currently all assets are in one file / CDK Stack
@@ -120,6 +124,9 @@ flowchart LR
 * Unsure as to where ansible would be useful / effective
   * There are no AMI's to build
   * Container hardening would be performed in a production setup
+  * I would not reccomded deploying via ansible as this would leave open security holes
+  * Ansible as part of an EC2/ AMI / image build process; however as far as I can see this is not required 
+    * The use case may become more obvious with more time to assess.
 
 
 
